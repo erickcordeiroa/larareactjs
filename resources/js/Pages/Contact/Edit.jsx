@@ -4,6 +4,7 @@ import TextInput from '@/Components/TextInput';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Head, router } from "@inertiajs/react";
+import { useEffect } from 'react';
 import { useForm } from "react-hook-form";
 import Swal from 'sweetalert2';
 import { z } from "zod";
@@ -15,15 +16,15 @@ const schema = z.object({
   age: z.string().min(1, { message: "Você precisa colocar pelo menos 1 número na idade" })
 });
 
-export default function Create({ auth }) {
+export default function Edit({ auth, contact }) {
 
-  const { register, handleSubmit, formState: { errors } } = useForm({
+  const { register, handleSubmit, formState: { errors }, setValue } = useForm({
     resolver: zodResolver(schema)
   });
 
   const onSubmit = (data) => {
     try {
-      router.post(route('contact.store'), data);
+      router.put(`/contact/${contact.id}`, data);
     } catch (error) {
       Swal.fire({
         icon: 'error',
@@ -37,9 +38,9 @@ export default function Create({ auth }) {
   return (
     <AuthenticatedLayout
       user={auth.user}
-      header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Create a new contact</h2>}
+      header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Editar a contact</h2>}
     >
-      <Head title="Create a new contact" />
+      <Head title="Edit a contact" />
 
       <div className="py-12">
         <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -53,6 +54,7 @@ export default function Create({ auth }) {
                   type="text"
                   name="name"
                   {...register('name')}
+                  defaultValue={contact.name}
                   className="mt-1 block w-full"
                 />
 
@@ -67,6 +69,7 @@ export default function Create({ auth }) {
                   type="email"
                   name="email"
                   {...register('email')}
+                  defaultValue={contact.email}
                   className="mt-1 block w-full"
                 />
 
@@ -80,6 +83,7 @@ export default function Create({ auth }) {
                   id="phone"
                   type="text"
                   name="phone"
+                  defaultValue={contact.phone}
                   {...register('phone')}
                   className="mt-1 block w-full"
                 />
@@ -95,6 +99,7 @@ export default function Create({ auth }) {
                   type="number"
                   name="age"
                   {...register('age')}
+                  defaultValue={contact.age}
                   className="mt-1 block w-full"
                 />
 
@@ -102,7 +107,7 @@ export default function Create({ auth }) {
               </div>
 
               <div className='mt-4'>
-                <button className='w-full bg-green-600 text-white uppercase font-semibold py-3 rounded-md'>Criar novo</button>
+                <button className='w-full bg-green-600 text-white uppercase font-semibold py-3 rounded-md'>Editar Contato</button>
               </div>
             </form>
           </div>

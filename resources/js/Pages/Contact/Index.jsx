@@ -24,6 +24,14 @@ export default function Index({ auth, contacts, queryParams = null, session }) {
     router.get(route('contact.index'), queryParams['search']);
   }
 
+  const onUpdate = (data) => {
+    router.get(`/contact/${data}`);
+  }
+
+  const handleClearSearch = () => {
+    router.get(route('contact.index'));
+  }
+
 
   const onDelete = (data) => {
     try {
@@ -72,6 +80,7 @@ export default function Index({ auth, contacts, queryParams = null, session }) {
                     className='w-96 border border-gray-200 rounded-md'
                   />
                   <button className='ml-4 bg-blue-400 text-white py-2 px-6 rounded-md'>Pesquisar</button>
+                  <button type='button' onClick={ handleClearSearch } className='ml-4 bg-white border border-blue-400 transition-all text-blue-400 py-2 px-6 rounded-md hover:bg-blue-400 hover:text-white'>Limpar Filtro</button>
                 </>
                 {errors['search'] && <span className='py-1 text-red-500 block'>{errors['search'].message}</span>}
               </form>
@@ -97,7 +106,7 @@ export default function Index({ auth, contacts, queryParams = null, session }) {
                         <td className="text-left py-2 px-3">{contact.email}</td>
                         <td className="text-left py-2 px-3">{contact.age}</td>
                         <td className="py-2 px-3 flex gap-2 justify-center">
-                          <button className='bg-blue-500 text-white cursor-pointer rounded-md px-4 py-2'>Editar</button>
+                          <button className='bg-blue-500 text-white cursor-pointer rounded-md px-4 py-2'onClick={() => onUpdate(contact.id)}>Editar</button>
                           <button className='bg-red-500 text-white cursor-pointer rounded-md px-4 py-2' onClick={() => onDelete(contact.id)}>Excluir</button>
                         </td>
                       </tr>

@@ -79,6 +79,8 @@ class ContactController extends Controller
             'email' => $request->input('email'),
             'age' => $request->input('age')
         ]);
+
+        return to_route('contact.index')->with('success', 'Contact updated successfully');
     }
 
     /**
